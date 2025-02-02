@@ -1,13 +1,17 @@
 from django.db import models
 
 class Usuario(models.Model):
+    usuario = models.CharField(max_length=100)
     roll=models.CharField(max_length=100)
     password=models.CharField(max_length=100)
     nombre = models.CharField(max_length=100)
     telefono = models.CharField(max_length=20)
     direccion = models.CharField(max_length=200)
-    def __str__(self)
-         return f"{self.nombre} - {self.roll} ({self.telefono} -{self.direccion})"
+    class Meta:
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
+    def __str__(self):
+         return f"{self.nombre} - {self.roll} - ({self.telefono} - {self.direccion} - {self.usuario})"
 
 
 class Proveedor(Usuario):
@@ -58,14 +62,14 @@ class Producto(models.Model):
         verbose_name_plural = 'Productos'
 
 class Compra(models.Model):  #Una compra es lo que realiza alimentos frescos para la venta 
-    provedor = models.ForeingnKey(Provedor,on_delete=models.CASCADE,related_name="compras")
-    producto = models.ForeignKey(Producto,on_delete=models.CASCADE,RELATED_name="compras")
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, related_name="compras")
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="compras")
     fecha = models.DateField()
     cant = models.IntegerField()
-    precio = models.DecimalField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self)
-       return f"{self.provedor.nombre} - {self.producto.nombre} - {self.fecha} - {self.cant} - {self.precio}"
+    def __str__(self):
+       return f"{self.proveedor.nombre} - {self.producto.nombre} - {self.fecha} - {self.cant} - {self.precio}"
 
     class Meta:
         verbose_name = "Compra"
