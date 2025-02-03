@@ -1,25 +1,21 @@
 from rest_framework import serializers
-from .models import Usuario, Proveedor, Administrador, Cliente, Pedido, Producto, Compra
+from .models import Usuario, Proveedor, Cliente, Pedido, Producto, Compra
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'usuario', 'roll', 'password', 'nombre', 'telefono', 'direccion']
+        fields = ['id', 'nombre', 'telefono', 'direccion']
 
 class ProveedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proveedor
-        fields = ['id', 'usuario', 'roll', 'password', 'nombre', 'telefono', 'direccion']
-
-class AdministradorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Administrador
-        fields = ['id', 'usuario', 'roll', 'password', 'nombre', 'telefono', 'direccion']
+        fields = ['id', 'nombre', 'telefono', 'direccion']
 
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ['id', 'usuario', 'roll', 'password', 'nombre', 'telefono', 'direccion', 'tipo', 'ci']
+        fields = ['id', 'nombre', 'telefono', 'direccion', 'usuario', 'password', 'tipo', 'ci']
+        extra_kwargs = {'password': {'write_only': True}}
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,8 +23,8 @@ class ProductoSerializer(serializers.ModelSerializer):
         fields = ['id', 'nombre', 'tipo', 'unidad_medida', 'precio_costo', 'pedidos']
 
 class PedidoSerializer(serializers.ModelSerializer):
-    productos = ProductoSerializer(many=True, read_only=True)
     cliente = ClienteSerializer(read_only=True)
+    productos = ProductoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Pedido

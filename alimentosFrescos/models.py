@@ -1,9 +1,6 @@
 from django.db import models
 
 class Usuario(models.Model):
-    usuario = models.CharField(max_length=100)
-    roll=models.CharField(max_length=100)
-    password=models.CharField(max_length=100)
     nombre = models.CharField(max_length=100)
     telefono = models.CharField(max_length=20)
     direccion = models.CharField(max_length=200)
@@ -11,24 +8,25 @@ class Usuario(models.Model):
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
     def __str__(self):
-         return f"{self.nombre} - {self.roll} - ({self.telefono} - {self.direccion} - {self.usuario})"
+        return f"Usuario: {self.nombre} - Tel: {self.telefono} - Dir: {self.direccion}"
 
 
 class Proveedor(Usuario):
     class Meta:
         verbose_name = 'Proveedor'
         verbose_name_plural = 'Proveedores'
+    def __str__(self):
+        return f"Proveedor: {self.nombre} - Tel: {self.telefono}"
 
-class Administrador(Usuario):
-    class Meta:
-        verbose_name = 'Administrador'
-        verbose_name_plural = 'Administradores'
+
 
 class Cliente(Usuario):
+    usuario = models.CharField(max_length=100)
+    password=models.CharField(max_length=100)
     tipo = models.CharField(max_length=100)
     ci = models.CharField(max_length=20)
     def __str__(self):
-        return f"{self.tipo}-{self.ci}"
+        return f"Cliente: {self.nombre} - Tipo: {self.tipo} - CI: {self.ci}"
     class Meta:
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
@@ -41,7 +39,7 @@ class Pedido(models.Model): #los pedidos son las coompras realizadas por un clie
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Pedido de {self.cliente.nombre} - {self.estado}"
+        return f"Pedido de {self.cliente.nombre} - Estado: {self.estado} - Fecha: {self.fecha_creacion}"
 
     class Meta:
         verbose_name = 'Pedido'
@@ -55,7 +53,7 @@ class Producto(models.Model):
     pedidos = models.ManyToManyField(Pedido, related_name='productos')
 
     def __str__(self):
-        return f"{self.nombre} - {self.tipo}"
+        return f"Producto: {self.nombre} - Tipo: {self.tipo} - Precio: ${self.precio_costo}"
 
     class Meta:
         verbose_name = 'Producto'
@@ -69,7 +67,7 @@ class Compra(models.Model):  #Una compra es lo que realiza alimentos frescos par
     precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-       return f"{self.proveedor.nombre} - {self.producto.nombre} - {self.fecha} - {self.cant} - {self.precio}"
+        return f"Compra de {self.producto.nombre} - Proveedor: {self.proveedor.nombre} - Cantidad: {self.cant}"
 
     class Meta:
         verbose_name = "Compra"
