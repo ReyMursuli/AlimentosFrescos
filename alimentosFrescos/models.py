@@ -61,7 +61,7 @@ class Producto(models.Model):
     tipo = models.CharField(max_length=100)
     unidad_medida = models.CharField(max_length=50)
     precio_costo = models.DecimalField(max_digits=10, decimal_places=2)
-    pedidos = models.ManyToManyField(Pedido, related_name='productos')
+    pedidos = models.ManyToManyField(Pedido, related_name='productos', blank=True)
 
     def __str__(self):
         return f"Producto: {self.nombre} - Tipo: {self.tipo} - Precio: ${self.precio_costo}"
