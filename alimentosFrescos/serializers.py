@@ -4,23 +4,23 @@ from .models import Usuario, Proveedor, Cliente, Pedido, Producto, Compra
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'nombre', 'telefono', 'direccion']
+        fields = '__all__'
 
 class ProveedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proveedor
-        fields = ['id', 'nombre', 'telefono', 'direccion']
+        fields = '__all__'
 
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ['id', 'nombre', 'telefono', 'direccion', 'usuario', 'password', 'tipo', 'ci']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = '__all__'  #preguntar por password
+        
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        fields = ['id', 'nombre', 'tipo', 'unidad_medida', 'precio_costo', 'pedidos']
+        fields = '__all__'
 
 class PedidoSerializer(serializers.ModelSerializer):
     cliente = ClienteSerializer(read_only=True)
@@ -28,7 +28,7 @@ class PedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
-        fields = ['id', 'cliente', 'cantidad', 'precio', 'estado', 'fecha_creacion', 'productos']
+        fields = '__all__'
 
 class CompraSerializer(serializers.ModelSerializer):
     proveedor = ProveedorSerializer(read_only=True)
@@ -36,4 +36,4 @@ class CompraSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Compra
-        fields = ['id', 'proveedor', 'producto', 'fecha', 'cant', 'precio']
+        fields = '__all__'

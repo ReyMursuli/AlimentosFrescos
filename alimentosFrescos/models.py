@@ -1,6 +1,7 @@
 from django.db import models
 
 class Usuario(models.Model):
+    id = models.BigAutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     telefono = models.CharField(max_length=20)
     direccion = models.CharField(max_length=200)
@@ -8,7 +9,7 @@ class Usuario(models.Model):
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
     def __str__(self):
-        return f"Usuario: {self.nombre} - Tel: {self.telefono} - Dir: {self.direccion}"
+        return self.nombre
 
 
 class Proveedor(Usuario):
@@ -16,20 +17,30 @@ class Proveedor(Usuario):
         verbose_name = 'Proveedor'
         verbose_name_plural = 'Proveedores'
     def __str__(self):
-        return f"Proveedor: {self.nombre} - Tel: {self.telefono}"
+        return self.nombre
 
 
 
 class Cliente(Usuario):
-    usuario = models.CharField(max_length=100)
-    password=models.CharField(max_length=100)
-    tipo = models.CharField(max_length=100)
-    ci = models.CharField(max_length=20)
-    def __str__(self):
-        return f"Cliente: {self.nombre} - Tipo: {self.tipo} - CI: {self.ci}"
+    tipo = models.CharField(
+        max_length=20,
+        default='regular',
+        help_text="Tipo de cliente"
+    )
+    ci = models.CharField(
+        max_length=20, 
+        unique=True,
+        help_text="Carnet de identidad"
+    )
+    nombre_usuario = models.CharField(max_length=100, unique=True)
+    password = models.CharField(max_length=100)
+
     class Meta:
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
+
+    def __str__(self):
+        return self.nombre
 
 class Pedido(models.Model): #los pedidos son las coompras realizadas por un cliente 
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='pedidos')
