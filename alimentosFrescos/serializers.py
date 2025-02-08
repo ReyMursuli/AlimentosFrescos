@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Usuario, Proveedor, Cliente, Pedido, Producto, Compra
+from django.contrib.auth.hashers import make_password
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,8 +15,9 @@ class ProveedorSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = '__all__'  #preguntar por password
-        
+        fields = '__all__'
+
+   
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,7 +46,7 @@ class CompraSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Compra
-        fields = ['id', 'proveedor', 'proveedor_id', 'producto', 'cantidad', 'precio', 'fecha_creacion']
+        fields = ['id', 'proveedor', 'proveedor_id', 'producto', 'cant', 'precio', 'fecha']
 
     def create(self, validated_data):
         proveedor_id = validated_data.pop('proveedor_id')

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'alimentosFrescos',
     'rest_framework',
-    'drf_yasg'
+    'drf_yasg',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
